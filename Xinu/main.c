@@ -15,3 +15,12 @@ int estadoSemaforo = 0;
 
 // Semáforo para evitar concorrência entre processos
 sid32 semaforoMutex; 
+
+// Função auxiliar para aguardar um tempo específico e mostrar a contagem no console
+void esperar(int segundos) {
+    int i;
+    for (i = 1; i <= segundos; i++) {  // Loop que se repete até atingir o tempo desejado
+        kprintf("Segundos: %d\n", i);  // Exibe no console quantos segundos já se passaram
+        sleepms(1000);  // Faz o processo "dormir" por 1000 milissegundos (1 segundo)
+    }
+}
