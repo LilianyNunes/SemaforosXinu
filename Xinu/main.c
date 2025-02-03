@@ -32,41 +32,41 @@ void temporizador(int segundos) {
 void semaforoSimulacao() {
     while (TRUE) {
         wait(semaforoMutex); // Protege contra concorrência
+
         switch (estadoSemaforo) {
             case 0: // Semáforo 1 verde, Semáforo 2 vermelho
-                kprintf("\nSemaforo 1: Verde ligado, Amarelo desligado, Vermelho desligado\n");
-                kprintf("Semaforo 2: Verde desligado, Amarelo desligado, Vermelho ligado\n");
-                signal(semaforoMutex);
-                esperar(TEMPO_VERDE);
+                send(filaSemaforo1, "Semaforo 1: Verde ligado");
+                send(filaSemaforo2, "Semaforo 2: Vermelho ligado");
+
+                temporizador(TEMPO_VERDE);
                 estadoSemaforo = 1; // Próximo estado: Semáforo 1 amarelo
                 break;
 
             case 1: // Semáforo 1 amarelo, Semáforo 2 vermelho
-                wait(semaforoMutex);
-                kprintf("\nSemaforo 1: Verde desligado, Amarelo ligado, Vermelho desligado\n");
-                kprintf("Semaforo 2: Verde desligado, Amarelo desligado, Vermelho ligado\n");
-                signal(semaforoMutex);
-                esperar(TEMPO_AMARELO);
+                send(filaSemaforo1, "Semaforo 1: Amarelo ligado");
+                send(filaSemaforo2, "Semaforo 2: Vermelho ligado");
+
+                temporizador(TEMPO_AMARELO);
                 estadoSemaforo = 2; // Próximo estado: Semáforo 2 verde
                 break;
 
             case 2: // Semáforo 2 verde, Semáforo 1 vermelho
-                wait(semaforoMutex);
-                kprintf("\nSemaforo 1: Verde desligado, Amarelo desligado, Vermelho ligado\n");
-                kprintf("Semaforo 2: Verde ligado, Amarelo desligado, Vermelho desligado\n");
-                signal(semaforoMutex);
-                esperar(TEMPO_VERDE);
+                send(filaSemaforo1, "Semaforo 1: Vermelho ligado");
+                send(filaSemaforo2, "Semaforo 2: Verde ligado");
+
+                temporizador(TEMPO_VERDE);
                 estadoSemaforo = 3; // Próximo estado: Semáforo 2 amarelo
                 break;
 
             case 3: // Semáforo 2 amarelo, Semáforo 1 vermelho
-                wait(semaforoMutex);
-                kprintf("\nSemaforo 1: Verde desligado, Amarelo desligado, Vermelho ligado\n");
-                kprintf("Semaforo 2: Verde desligado, Amarelo ligado, Vermelho desligado\n");
-                signal(semaforoMutex);
-                esperar(TEMPO_AMARELO);
+                send(filaSemaforo1, "Semaforo 1: Vermelho ligado");
+                send(filaSemaforo2, "Semaforo 2: Amarelo ligado");
+
+                temporizador(TEMPO_AMARELO);
                 estadoSemaforo = 0; // Próximo estado: Semáforo 1 verde
                 break;
         }
+
+        signal(semaforoMutex); // Libera o semáforo após o processamento
     }
 }
