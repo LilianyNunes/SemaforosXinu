@@ -16,6 +16,10 @@ int estadoSemaforo = 0;
 // Semáforo para evitar concorrência entre processos
 sid32 semaforoMutex;
 
+// Filas de mensagens para comunicação entre processos
+sid32 filaSemaforo1;
+sid32 filaSemaforo2;
+
 // Função auxiliar para esperar utilizando o temporizador do Xinu
 void temporizador(int segundos) {
     uint32 tempo_inicial = clktime;  // Guarda o tempo atual
