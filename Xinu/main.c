@@ -14,14 +14,13 @@
 int estadoSemaforo = 0;
 
 // Semáforo para evitar concorrência entre processos
-sid32 semaforoMutex; 
+sid32 semaforoMutex;
 
-// Função auxiliar para aguardar um tempo específico e mostrar a contagem no console
-void esperar(int segundos) {
-    int i;
-    for (i = 1; i <= segundos; i++) {  // Loop que se repete até atingir o tempo desejado
-        kprintf("Segundos: %d\n", i);  // Exibe no console quantos segundos já se passaram
-        sleepms(1000);  // Faz o processo "dormir" por 1000 milissegundos (1 segundo)
+// Função auxiliar para esperar utilizando o temporizador do Xinu
+void temporizador(int segundos) {
+    uint32 tempo_inicial = clktime;  // Guarda o tempo atual
+    while ((clktime - tempo_inicial) < segundos) {
+        // Não faz nada, apenas espera
     }
 }
 
