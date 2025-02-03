@@ -81,3 +81,21 @@ void imprimirMensagens() {
         kprintf("%s\n", msg2);
     }
 }
+
+// Função principal do Xinu
+process main(void) {
+    // Criando semáforo mutex para sincronizar o acesso aos estados
+    semaforoMutex = semcreate(1);
+
+    // Criando filas de mensagens para cada semáforo
+    filaSemaforo1 = semcreate(0);
+    filaSemaforo2 = semcreate(0);
+
+    // Inicializa a simulação de semáforo em um processo separado
+    resume(create(semaforoSimulacao, 1024, 20, "SemaforoSimulacao", 0));
+    
+    // Inicializa o processo de impressão de mensagens
+    resume(create(imprimirMensagens, 1024, 20, "ImprimirMensagens", 0));
+
+    return OK;
+}
