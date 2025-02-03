@@ -70,3 +70,14 @@ void semaforoSimulacao() {
         signal(semaforoMutex); // Libera o semáforo após o processamento
     }
 }
+
+// Função para imprimir as mensagens da fila
+void imprimirMensagens() {
+    while (TRUE) {
+        char* msg1 = (char*)receive(filaSemaforo1);
+        kprintf("%s\n", msg1);
+        
+        char* msg2 = (char*)receive(filaSemaforo2);
+        kprintf("%s\n", msg2);
+    }
+}
